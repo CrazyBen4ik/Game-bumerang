@@ -3,23 +3,23 @@
 class Enemy {
   constructor() {
     this.generateSkin();
-    this.position = Math.floor(Math.random() * 30);
+    this.position = Math.floor(Math.random() * (30 - 4) + 4);
   }
 
   generateSkin() {
     const skins = [
-      "👾",
-      "💀",
-      "👹",
-      "👻",
-      "👽",
-      "👿",
-      "💩",
-      "🤡",
-      "🤺",
-      "🧛",
-      "🧟",
-      "🎃",
+      '👾',
+      '💀',
+      '👹',
+      '👻',
+      '👽',
+      '👿',
+      '💩',
+      '🤡',
+      '🤺',
+      '🧛',
+      '🧟',
+      '🎃',
     ];
     this.skin = skins[Math.floor(Math.random() * skins.length)];
   }
@@ -30,9 +30,9 @@ class Enemy {
   }
 
   die() {
-    this.position = "?";
-    this.skin = "💀";
-    console.log("Enemy is dead!");
+    this.position = '?';
+    this.skin = '💀';
+    console.log('Enemy is dead!');
   }
 }
 
