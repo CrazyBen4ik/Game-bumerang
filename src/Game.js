@@ -1,12 +1,13 @@
 // Импортируем всё необходимое.
 // Или можно не импортировать,
 // а передавать все нужные объекты прямо из run.js при инициализации new Game().
-const controls = require('./keyboard');
 const Hero = require("./game-models/Hero");
 const Enemy = require("./game-models/Enemy");
 // const Boomerang = require('./game-models/Boomerang');
 const View = require("./View");
 const Boomerang = require("./game-models/Boomerang");
+const runInteractiveConsole = require("./keyboard");
+
 // const keypress = require("keypress");
 // Основной класс игры.
 // Тут будут все настройки, проверки, запуск.
@@ -20,6 +21,33 @@ class Game {
     this.boomerang = new Boomerang();
     this.track = [];
     this.regenerateTrack();
+    this.setupControls();
+    this.count = 0;
+  }
+
+  setupControls() {
+    const keyboard = {
+      // q: () => console.log("q"),
+      // w: () => console.log("w"),
+      // e: () => console.log("e"),
+      // r: () => console.log("r"),
+      // t: () => console.log("t"),
+      // y: () => console.log("y"),
+      a: () => {
+        this.boomerang.moveLeft();
+        this.check();
+        this.regenerateTrack();
+        this.view.render(this.track);
+      },
+      d: () => {
+        this.boomerang.moveRight();
+        this.check();
+        this.regenerateTrack();
+        this.view.render(this.track);
+      },
+    };
+
+    runInteractiveConsole(keyboard, this.count); // Передаем объект управления и Boomerang
   }
 
   regenerateTrack() {
@@ -31,53 +59,25 @@ class Game {
     this.track[this.boomerang.position] = this.boomerang.skin;
   }
 
-  controls() {
-    controls.runInteractiveConsole();
-  }
-
   check() {
-    if (this.hero.position === this.enemy.position) {
-      this.hero.die();
+    if (this.boomerang.position === this.enemy.position) {
+      console.log(this.count);
+      this.count += 1;
+      this.boomerang.position = 0;
+      this.enemy.die();
+      this.enemy = new Enemy();
     }
   }
 
   play() {
-    setInterval(() => {
-      // Let's play!
-      this.check();
-      this.controls();
-      this.regenerateTrack();
-      this.view.render(this.track);
-    }, 500);
+    // setInterval(() => {
+    // Let's play!
+    this.check();
+    this.regenerateTrack();
+    this.view.render(this.track);
+    this.setupControls();
+    // }, 500);
   }
 }
 
 module.exports = Game;
-
-// const keyboard = {
-//   a: () => this.boomerang.moveLeft(),
-//   d: () => this.boomerang.moveRight(),
-// };
-
-// // Какая-то функция.
-
-// function runInteractiveConsole() {
-//   keypress(process.stdin);
-//   process.stdin.on("keypress", (ch, key) => {
-//     if (key) {
-//       // Вызывает команду, соответствующую нажатой кнопке.
-//       if (key.name in keyboard) {
-//         keyboard[key.name]();
-//       }
-//       // Прерывание программы.
-//       if (key.ctrl && key.name === "c") {
-//         process.exit();
-//       }
-//     }
-//   });
-//   process.stdin.setRawMode(true);
-// }
-
-// // Давай попробуем запустить этот скрипт!
-
-// runInteractiveConsole();
