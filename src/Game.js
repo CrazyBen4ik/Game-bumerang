@@ -45,6 +45,9 @@ class Game {
         this.regenerateTrack();
         this.view.render(this.track);
       },
+      c: () => {
+        console.log(`Побеждённых врагов: ${this.count}`);
+      },
     };
 
     runInteractiveConsole(keyboard, this.count); // Передаем объект управления и Boomerang
