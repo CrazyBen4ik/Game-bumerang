@@ -4,8 +4,8 @@
 
 class Boomerang {
   constructor() {
-    this.skin = '🌀';
-    this.position = 0;
+    this.skin = "🌀";
+    this.position = -1;
   }
 
   fly() {
